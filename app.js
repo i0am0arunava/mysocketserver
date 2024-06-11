@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
-const server = app.listen(443, () => console.log(`Server started on ${5000}`));
+const server = app.listen(5000, () => console.log(`Server started on ${5000}`));
 
 const io = socket(server, {
   cors: {
