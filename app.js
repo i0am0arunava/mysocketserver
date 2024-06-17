@@ -1,3 +1,4 @@
+
 const express = require("express");
 const cors = require("cors");
 
@@ -7,11 +8,11 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
-const server = app.listen(80, () => console.log(`Server started on ${5000}`));
+const server = app.listen(5000, () => console.log(`Server started on ${5000}`));
 
 const io = socket(server, {
   cors: {
-    origin: "https://heroic-beijinho-d9e039.netlify.app",
+    origin: "http://localhost:3000",
     credentials: true,
   },
 });
@@ -21,7 +22,7 @@ global.a = [];
 io.on("connection", (socket) => {
   global.chatSocket = socket;
   console.log("connected");
-
+ 
   socket.on("disconnect", () => {
     console.log("disconnected");
   });
@@ -33,9 +34,19 @@ io.on("connection", (socket) => {
    console.log("rrr",roomId.length==0)
    if(roomId.length!=0){
     addValueToMap(onlineUsers, roomId, socket.id);
-   console.log("user added")
+   
+    global.a=onlineUsers.get(roomId)
+   
+   if (global.a) {
+     global.a.forEach((sId) => {
+       if (sId) {
+         socket.to(sId).emit("contact",321);
+       }
+     });
    }
-
+   }
+  
+  
   
   });
 
@@ -48,10 +59,18 @@ io.on("connection", (socket) => {
   }
 
 
-  socket.on("leave-room", (data) => {
+  socket.on("leave-room", (roomId) => {
     removeUserFromRooms(socket.id);
-  
-    
+    socket.emit("userleft")
+    global.a=onlineUsers.get(roomId)
+   
+    if (global.a) {
+      global.a.forEach((sId) => {
+        if (sId) {
+          socket.to(sId).emit("userleft",321);
+        }
+      });
+    }
   });
 
   function removeUserFromRooms(socketId) {
