@@ -12,7 +12,7 @@ const server = app.listen(5000, () => console.log(`Server started on ${5000}`));
 
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://3.110.157.239:3000",
     credentials: true,
   },
 });
