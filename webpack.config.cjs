@@ -6,7 +6,7 @@ module.exports = {
   target: 'node', // Ensure Webpack understands it’s building for Node.js
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js', // The name of the bundled file
+    filename: 'packup.js', // The name of the bundled file
   },
   externals: [nodeExternals()], // Exclude node_modules from the bundle
   module: {
